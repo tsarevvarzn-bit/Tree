@@ -111,3 +111,26 @@ return_codes deleteSheet(node_t* const parent_p, branch_codes branch_code){
 
     return RET_CORRECT;
 }
+
+node_t** getBranchPointer(node_t * parent_p, const branch_codes branch_code){
+
+    assert(parent_p);
+
+    switch(branch_code){
+
+        case BRANCH_LEFT:
+
+            return &(parent_p->left_p);
+            break;
+
+        case BRANCH_RIGHT:
+
+            return &(parent_p->right_p);
+            break;
+
+        default:
+
+            printf(RED "ERROR: incorrect enum value in getBrunchPointer function: %d\n" DEFAULT, branch_code);
+            return NULL;
+    }
+}

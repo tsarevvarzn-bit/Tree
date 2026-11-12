@@ -17,4 +17,6 @@ void         printSubtreeInFile(const node_t* const root_p, FILE* const out_file
 return_codes createTreeFromFile(node_t** const root_p_p, const char* const name_of_in_file);
 return_codes createSubtreeFromFile(node_t* const parent_p, char* const tree_text, size_t* const symbol_idx_p);
 
+return_codes processBrunch(node_t* const parent_p, char* const tree_text, size_t* const symbol_idx_p, const branch_codes branch_code);
+
 #endif

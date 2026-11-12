@@ -10,5 +10,6 @@ return_codes createSheet       (node_t* const parent_p, branch_codes branch_code
 return_codes deleteNode        (node_t* const node_p);
 return_codes deleteSheet       (node_t* const parent_p, branch_codes branch_code);
 
+node_t**     getBranchPointer  (node_t * parent_p, const branch_codes branch_code);
 
 #endif
