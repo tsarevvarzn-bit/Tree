@@ -68,7 +68,7 @@ void addTreeToVisualization(const node_t* const root_p, FILE* const out_file_p){
     "    \"%p\" [label=<\n"
     "        <TABLE BORDER=\"2\" CELLBORDER=\"1\" CELLSPACING=\"0\" BGCOLOR=\"#9975bf\">\n"
     "            <TR><TD COLSPAN=\"3\" PORT=\"parent\">parent = %p</TD></TR>\n"
-    "            <TR><TD COLSPAN=\"3\" BGCOLOR = \"yellow\">value = %d</TD></TR>\n"
+    "            <TR><TD COLSPAN=\"3\" BGCOLOR = \"yellow\">value = %s</TD></TR>\n"
     "            <TR>\n"
     "                <TD PORT=\"left\">left = %p</TD>\n"
     "                <TD>pointer = %p</TD>\n"

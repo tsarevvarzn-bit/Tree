@@ -34,7 +34,6 @@ int main(){
 
     createTreeFromFile(&root_p, "Tree1.txt");
 
-
     visualizeTree(root_p, "labuba3.svg");
 
 }

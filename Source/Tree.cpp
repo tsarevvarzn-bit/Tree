@@ -1,7 +1,7 @@
 #include "..\Headers\Tree.h"
 
 
-return_codes createSheet(node_t* const parent_p, branch_codes branch_code, int value){
+return_codes createSheet(node_t* const parent_p, branch_codes branch_code, char* value){
 
     assert(parent_p);
 
@@ -35,7 +35,7 @@ return_codes createSheet(node_t* const parent_p, branch_codes branch_code, int v
     return RET_CORRECT;
 }
 
-return_codes createNode(node_t** const root_p_p, int value){
+return_codes createNode(node_t** const root_p_p, char* value){
 
     assert(root_p_p);
 
@@ -53,10 +53,11 @@ return_codes createNode(node_t** const root_p_p, int value){
         return RET_ERROR;
     }
 
-    (*root_p_p)->parent_p = NULL ;
-    (*root_p_p)->value    = value;
-    (*root_p_p)->left_p   = NULL ;
-    (*root_p_p)->right_p  = NULL ;
+    strncpy((*root_p_p)->value, value, MAX_STR_LEN);
+
+    (*root_p_p)->parent_p = NULL;
+    (*root_p_p)->left_p   = NULL;
+    (*root_p_p)->right_p  = NULL;
 
     return RET_CORRECT;
 }

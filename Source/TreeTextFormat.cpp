@@ -32,7 +32,7 @@ void printSubtreeInFile(const node_t* const root_p, FILE* const out_file_p){
 
     }else{
 
-        fprintf(out_file_p, "(%d", root_p->value);
+        fprintf(out_file_p, "(%s", root_p->value);
 
         printSubtreeInFile(root_p->left_p, out_file_p);
 
@@ -83,14 +83,10 @@ return_codes startProcessingFile(node_t** const root_p_p, const char* const tree
     assert(root_p_p);
     assert(tree_text);
 
-    int    root_value = 0;
+    char   root_value[MAX_STR_LEN] = "";
     size_t symbol_idx = 1;
 
-    sscanf(tree_text + 1, "%d", &root_value);
-
-    while(tree_text[symbol_idx++] != '('){
-
-    }
+    sscanf(tree_text + 1, "%[^()]", root_value);
 
     if(createNode(root_p_p, root_value) == RET_ERROR){
 
@@ -107,11 +103,15 @@ return_codes createSubtreeFromFile(node_t* const parent_p, const char* const tre
     assert(tree_text);
 
 
-    printf("\n\nTEXT NOW: <%s>, symbol: %llu\n", tree_text, *symbol_idx_p);
+    if(processBrunch(parent_p, tree_text, symbol_idx_p, BRANCH_LEFT ) == RET_ERROR){
 
-    processBrunch(parent_p, tree_text, symbol_idx_p, BRANCH_LEFT );
+        return RET_ERROR;
+    }
 
-    processBrunch(parent_p, tree_text, symbol_idx_p, BRANCH_RIGHT);
+    if(processBrunch(parent_p, tree_text, symbol_idx_p, BRANCH_RIGHT) == RET_ERROR){
+
+        return RET_ERROR;
+    }
 
     return RET_CORRECT;
 }
@@ -122,39 +122,39 @@ return_codes processBrunch(node_t* const parent_p, const char* const tree_text, 
     assert(symbol_idx_p);
     assert(tree_text);
 
-    int node_value = 0;
+    char node_value[MAX_STR_LEN] = "";
 
     node_t** node_p_p = getBranchPointer(parent_p, branch_code);
+
+    while(tree_text[(*symbol_idx_p)++] != '('){
+
+    }
 
     if(strncmp(tree_text + *symbol_idx_p, "nil)", 4) == 0){
 
         *node_p_p = NULL;
         *symbol_idx_p += 4;
 
-        while(tree_text[(*symbol_idx_p)++] != '('){
+        printf("NIL for <%s>, branch %d\n", parent_p->value, branch_code);
 
-        }
+        return RET_CORRECT;
 
-    }else{
-
-        if(sscanf(tree_text + *symbol_idx_p, "%d", &node_value) != 1){// Парсим значение левого, если оно некорректное - ошибка
-
-            printf(RED "ERROR: incorrect text format of tree in file symbol idx: %llu\n" DEFAULT, *symbol_idx_p);
-
-            return RET_ERROR;
-        }
-
-        printf("Create right kid of %d, %d\n", parent_p->value, node_value);
-
-        createSheet(parent_p, branch_code, node_value);// TODO проверка
-
-        while(tree_text[(*symbol_idx_p)++] != '('){
-
-        }
-
-        createSubtreeFromFile(*node_p_p, tree_text, symbol_idx_p);
     }
 
-    return RET_CORRECT;
+    if(sscanf(tree_text + *symbol_idx_p, "%[^()]", node_value) != 1){
+
+        printf(RED "ERROR: incorrect text format of tree in file symbol idx: %llu\n" DEFAULT, *symbol_idx_p);
+
+        return RET_ERROR;
+    }
+
+    printf("Create kid of <%s>, <%s>\n", parent_p->value, node_value);
+
+    if(createSheet(parent_p, branch_code, node_value) == RET_ERROR){
+
+        return RET_ERROR;
+    }
+
+    return createSubtreeFromFile(*node_p_p, tree_text, symbol_idx_p);
 }
 
