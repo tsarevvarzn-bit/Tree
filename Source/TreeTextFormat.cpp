@@ -49,7 +49,6 @@ return_codes createTreeFromFile(node_t** const root_p_p, const char* const name_
     assert(name_of_in_file);
 
     int    in_file_descr = open(name_of_in_file, _O_BINARY | _O_RDONLY);
-    size_t symbol_idx    = 0;
 
     if(in_file_descr == EOF){
 
@@ -70,29 +69,8 @@ return_codes createTreeFromFile(node_t** const root_p_p, const char* const name_
 
     read(in_file_descr, tree_text, file_stats.st_size);
 
-    int root_value = 0;
 
-    sscanf(tree_text + 1, "%d", &root_value);
-
-    symbol_idx = 1;
-
-    printf("%llu", symbol_idx);
-
-    while(tree_text[symbol_idx++] != '('){
-
-        printf("%c\n", tree_text[symbol_idx]);
-
-    }//Проскипали до первого аргумента
-
-    printf("%llu", symbol_idx);
-
-    createNode(root_p_p, root_value);//TODO проверка
-
-    printf("%llu", symbol_idx);
-
-    printf("\n\nFIRST TEXT NOW: <%s>, symbol: %llu>", tree_text, symbol_idx);
-
-    createSubtreeFromFile(*root_p_p, tree_text, &symbol_idx);
+    startProcessingFile(root_p_p, tree_text);
 
 
     close(in_file_descr);
@@ -100,7 +78,30 @@ return_codes createTreeFromFile(node_t** const root_p_p, const char* const name_
     return RET_CORRECT;
 }
 
-return_codes createSubtreeFromFile(node_t* const parent_p, char* const tree_text, size_t* const symbol_idx_p){
+return_codes startProcessingFile(node_t** const root_p_p, const char* const tree_text){
+
+    assert(root_p_p);
+    assert(tree_text);
+
+    int    root_value = 0;
+    size_t symbol_idx = 1;
+
+    sscanf(tree_text + 1, "%d", &root_value);
+
+    while(tree_text[symbol_idx++] != '('){
+
+    }
+
+    if(createNode(root_p_p, root_value) == RET_ERROR){
+
+        printf(RED "ERROR: can't create a root of tree from file\n" DEFAULT);
+        return RET_ERROR;
+    }
+
+    return createSubtreeFromFile(*root_p_p, tree_text, &symbol_idx);
+}
+
+return_codes createSubtreeFromFile(node_t* const parent_p, const char* const tree_text, size_t* const symbol_idx_p){
 
     assert(symbol_idx_p);
     assert(tree_text);
@@ -115,7 +116,7 @@ return_codes createSubtreeFromFile(node_t* const parent_p, char* const tree_text
     return RET_CORRECT;
 }
 
-return_codes processBrunch(node_t* const parent_p, char* const tree_text, size_t* const symbol_idx_p, const branch_codes branch_code){
+return_codes processBrunch(node_t* const parent_p, const char* const tree_text, size_t* const symbol_idx_p, const branch_codes branch_code){
 
     assert(parent_p);
     assert(symbol_idx_p);
