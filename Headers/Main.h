@@ -5,6 +5,7 @@
 
 #include "Tree.h"
 #include "Visualization.h"
+#include "TreeTextFormat.h"
 
 
 #endif

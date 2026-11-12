@@ -10,7 +10,5 @@ return_codes createSheet       (node_t* const parent_p, branch_codes branch_code
 return_codes deleteNode        (node_t* const node_p);
 return_codes deleteSheet       (node_t* const parent_p, branch_codes branch_code);
 
-void         printTreeInConsole(const node_t* const root_p);
-
 
 #endif

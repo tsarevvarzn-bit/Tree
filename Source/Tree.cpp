@@ -111,20 +111,3 @@ return_codes deleteSheet(node_t* const parent_p, branch_codes branch_code){
 
     return RET_CORRECT;
 }
-
-void printTreeInConsole(const node_t* const root_p){
-
-    if(root_p == NULL){
-
-        printf("(nil)");
-        return;
-    }
-
-    printf("(%d", root_p->value);
-
-    printTreeInConsole(root_p->left_p);
-
-    printTreeInConsole(root_p->right_p);
-
-    printf(")");
-}
