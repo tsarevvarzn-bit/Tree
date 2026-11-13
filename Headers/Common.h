@@ -1,11 +1,14 @@
 #ifndef COMMON_H
 #define COMMON_H
 
+
 #include <stdio.h>
 #include <assert.h>
 #include <string.h>
 
 #include "Colors.h"
+
+#undef ON_DEBUG
 
 const int MAX_STR_LEN = 100;
 

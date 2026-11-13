@@ -102,7 +102,6 @@ return_codes createSubtreeFromFile(node_t* const parent_p, const char* const tre
     assert(symbol_idx_p);
     assert(tree_text);
 
-
     if(processBrunch(parent_p, tree_text, symbol_idx_p, BRANCH_LEFT ) == RET_ERROR){
 
         return RET_ERROR;
