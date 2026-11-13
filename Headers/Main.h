@@ -8,5 +8,6 @@
 #include "TreeTextFormat.h"
 
 void startAkinator(node_t* root_p);
+void trainAkinator(node_t* root_p, branch_codes branch_code);
 
 #endif

@@ -8,7 +8,7 @@ int main(){
 
     bool is_guessing = true;
 
-    visualizeTree(root_p, "labuba3.svg");
+    visualizeTree(root_p, "TreeViz.svg");
 
     while(is_guessing){
 
@@ -46,7 +46,7 @@ int main(){
 
             default:
 
-                printf(RED "\nIncorrect format of command! Start doing command 4\n");
+                printf(RED "\nIncorrect format of command! Start doing command 4\n" DEFAULT);
                 is_guessing = false;
         }
     }
@@ -77,7 +77,7 @@ void startAkinator(node_t* root_p){
             branch_code = BRANCH_RIGHT;
         }
 
-        getchar();// Берем /n
+        getchar();
     }
 
     printf("YOU HAVE MADE A WISH: " YELLOW "%s" DEFAULT ", isn't it? y/n:", root_p->value);
@@ -90,38 +90,41 @@ void startAkinator(node_t* root_p){
     }else{
 
         getchar();
-        printf("\n... Ok, let's make sure I guess next time. So, enter the name of the object you have hidden:");
-
-        char new_object_name[MAX_STR_LEN] = "";
-
-        scanf("%[^\n]", new_object_name); getchar();
-
-        printf("\nHow is %s different from %s? %s is:", new_object_name, root_p->value, new_object_name);
-
-        char new_question_value[MAX_STR_LEN] = "";
-
-        scanf("%[^\n]", new_question_value); getchar();
-
-        strcat(new_question_value, "?");
-
-        // TODO корень менять не можем
-
-        node_t* parent_of_new_question_p = root_p->parent_p;//Sportsmen?
-
-        char old_object_name[MAX_STR_LEN] = "";
-
-        strncpy(old_object_name, root_p->value, MAX_STR_LEN);
-
-
-
-        deleteSheet(parent_of_new_question_p, branch_code);
-
-        createSheet(parent_of_new_question_p        , branch_code , new_question_value);
-
-        node_t* new_question_p = *getBranchPointer(parent_of_new_question_p, branch_code);
-
-        createSheet(new_question_p, BRANCH_LEFT , new_object_name   );
-
-        createSheet(new_question_p, BRANCH_RIGHT, old_object_name   );
+        trainAkinator(root_p, branch_code);
     }
+
+}
+
+void trainAkinator(node_t* root_p, branch_codes branch_code){
+
+    assert(root_p);
+
+    char new_object_name   [MAX_STR_LEN] = "";
+    char new_question_value[MAX_STR_LEN] = "";
+
+
+    printf("\n... Ok, let's make sure I guess next time. So, enter the name of the object you have hidden:");
+
+    scanf("%[^\n]", new_object_name   ); getchar();
+
+    printf("\nHow is %s different from %s? %s is:", new_object_name, root_p->value, new_object_name);
+
+    scanf("%[^\n]", new_question_value); getchar();
+
+    strcat(new_question_value, "?");
+
+
+    node_t* parent_of_new_question_p = root_p->parent_p;
+
+
+    deleteSheet(parent_of_new_question_p, branch_code);
+
+    createSheet(parent_of_new_question_p        , branch_code , new_question_value);
+
+    node_t* new_question_p = *getBranchPointer(parent_of_new_question_p, branch_code);
+
+    createSheet(new_question_p, BRANCH_LEFT , new_object_name );
+
+    createSheet(new_question_p, BRANCH_RIGHT, root_p->value   );
+
 }
