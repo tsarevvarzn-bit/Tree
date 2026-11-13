@@ -135,7 +135,7 @@ return_codes processBrunch(node_t* const parent_p, const char* const tree_text, 
         *node_p_p = NULL;
         *symbol_idx_p += 4;
 
-        printf("NIL for <%s>, branch %d\n", parent_p->value, branch_code);
+        ON_DEBUG(printf("NIL for <%s>, branch %d\n", parent_p->value, branch_code);)
 
         return RET_CORRECT;
 
@@ -148,7 +148,7 @@ return_codes processBrunch(node_t* const parent_p, const char* const tree_text, 
         return RET_ERROR;
     }
 
-    printf("Create kid of <%s>, <%s>\n", parent_p->value, node_value);
+    ON_DEBUG(printf("Create kid of <%s>, <%s>\n", parent_p->value, node_value);)
 
     if(createSheet(parent_p, branch_code, node_value) == RET_ERROR){
 

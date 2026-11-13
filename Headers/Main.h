@@ -7,5 +7,6 @@
 #include "Visualization.h"
 #include "TreeTextFormat.h"
 
+void startAkinator(node_t* root_p);
 
 #endif

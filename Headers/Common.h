@@ -30,4 +30,14 @@ enum branch_codes{
     BRANCH_RIGHT
 };
 
+#ifdef DEBUG
+
+    #define ON_DEBUG(...) __VA_ARGS__
+
+#else
+
+    #define ON_DEBUG(...)
+
+#endif
+
 #endif
