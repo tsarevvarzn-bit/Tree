@@ -23,7 +23,6 @@ void visualizeTree(const node_t* const root_p, const char * const name_of_file){
     "\n"
     "    edge [\n"
     "        penwidth=5,\n"
-    "        arrowhead=\"vee\",\n"
     "        color=\"#0e6fbe\",\n"
     "    ]\n"
     "\n"
@@ -102,8 +101,8 @@ void addTreeToVisualization(const node_t* const root_p, FILE* const out_file_p){
     addTreeToVisualization(root_p->left_p , out_file_p);
     addTreeToVisualization(root_p->right_p, out_file_p);
 
-    fprintf(out_file_p, "\"%p\":left->\"%p\"\n" , root_p, root_p->left_p );
-    fprintf(out_file_p, "\"%p\":right->\"%p\"\n", root_p, root_p->right_p);
+    fprintf(out_file_p, "\"%p\":left->\"%p\"[label = \"YES\", fontcolor = \"white\"]\n" , root_p, root_p->left_p );
+    fprintf(out_file_p, "\"%p\":right->\"%p\"[label = \"NO\", fontcolor = \"white\"]\n", root_p, root_p->right_p);
 
     fprintf(out_file_p, "{rank=same; \"%p\"; \"%p\"}\n", root_p->left_p, root_p->left_p);
 }
