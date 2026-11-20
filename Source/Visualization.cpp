@@ -14,9 +14,7 @@ void visualizeTree(const node_t* const root_p, const char * const name_of_file){
     "\n"
     "    graph [\n"
     "        rankdir=TB,\n"
-    "        splines=true,\n"
-    "        overlap=true,\n"
-    "        nodesep=0.5,\n"
+    "        nodesep=1,\n"
     "        ranksep=0.8,\n"
     "        bgcolor=\"#312d4b\"\n"
     "    ]\n"
@@ -26,7 +24,11 @@ void visualizeTree(const node_t* const root_p, const char * const name_of_file){
     "        color=\"#0e6fbe\",\n"
     "    ]\n"
     "\n"
-    "    node [shape=plain]\n"
+    "    node [\n"
+    "        shape = Mrecord,\n"
+    "        style = filled,\n"
+    "        fillcolor = \"yellow\"\n"
+    "    ]\n"
 
     );
 
@@ -53,8 +55,6 @@ void visualizeTree(const node_t* const root_p, const char * const name_of_file){
                    "int result = system(%s);\n"       \
                    "result: %d" DEFAULT, str_for_system_call, result);
     }
-
-
 }
 
 void addTreeToVisualization(const node_t* const root_p, FILE* const out_file_p){
@@ -62,22 +62,23 @@ void addTreeToVisualization(const node_t* const root_p, FILE* const out_file_p){
     assert(root_p);
     assert(out_file_p);
 
+    ON_DEBUG(
     fprintf(out_file_p,
 
-    "    \"%p\" [label=<\n"
-    "        <TABLE BORDER=\"2\" CELLBORDER=\"1\" CELLSPACING=\"0\" BGCOLOR=\"#9975bf\">\n"
-    "            <TR><TD COLSPAN=\"3\" PORT=\"parent\">parent = %p</TD></TR>\n"
-    "            <TR><TD COLSPAN=\"3\" BGCOLOR = \"yellow\">value = %s</TD></TR>\n"
-    "            <TR>\n"
-    "                <TD PORT=\"left\">left = %p</TD>\n"
-    "                <TD>pointer = %p</TD>\n"
-    "                <TD PORT=\"right\">right = %p</TD>\n"
-    "            </TR>\n"
-    "        </TABLE>\n"
-    "    >];\n",
+    "    \"%p\" [label= \"{ <parent> parent = \\\"%p\\\" |\n"
+    "           value = %s | \n"
+    "           { <left> left = \\\"%p\\\"| pointer = \\\"%p\\\" | <right> right = \\\"%p\\\"}}\"]\n\n",
 
     root_p, root_p->parent_p, root_p->value, root_p->left_p, root_p, root_p->right_p);
+    )
 
+    OFF_DEBUG(
+    fprintf(out_file_p,
+
+    "    \"%p\" [label = \" value = %s\"]\n\n",
+
+    root_p, root_p->value);
+    )
 
     if(root_p->left_p == NULL && root_p->right_p == NULL){
 
@@ -87,22 +88,26 @@ void addTreeToVisualization(const node_t* const root_p, FILE* const out_file_p){
     if(root_p->left_p == NULL){
 
         addTreeToVisualization(root_p->right_p, out_file_p);
-        fprintf(out_file_p, "\"%p\":right->\"%p\"\n", root_p, root_p->right_p);
+        ON_DEBUG( fprintf(out_file_p, "   \"%p\":right->\"%p\"\n", root_p, root_p->right_p);)
+        OFF_DEBUG(fprintf(out_file_p, "   \"%p\"->\"%p\"\n", root_p, root_p->right_p);)
         return;
     }
 
     if(root_p->right_p == NULL){
 
         addTreeToVisualization(root_p->left_p, out_file_p);
-        fprintf(out_file_p, "\"%p\":left->\"%p\"\n", root_p, root_p->left_p);
+        ON_DEBUG( fprintf(out_file_p, "   \"%p\":left->\"%p\"\n", root_p, root_p->left_p);)
+        OFF_DEBUG(fprintf(out_file_p, "   \"%p\"->\"%p\"\n", root_p, root_p->left_p);)
         return;
     }
 
     addTreeToVisualization(root_p->left_p , out_file_p);
     addTreeToVisualization(root_p->right_p, out_file_p);
 
-    fprintf(out_file_p, "\"%p\":left->\"%p\"[label = \"YES\", fontcolor = \"white\"]\n" , root_p, root_p->left_p );
-    fprintf(out_file_p, "\"%p\":right->\"%p\"[label = \"NO\", fontcolor = \"white\"]\n", root_p, root_p->right_p);
+    ON_DEBUG( fprintf(out_file_p, "   \"%p\":left->\"%p\"[label = \"YES\", fontcolor = \"white\"]\n" , root_p, root_p->left_p );)
+    OFF_DEBUG(fprintf(out_file_p, "   \"%p\"->\"%p\"[label = \"YES\", fontcolor = \"white\"]\n"      , root_p, root_p->left_p );)
+    ON_DEBUG( fprintf(out_file_p, "   \"%p\":right->\"%p\"[label = \"NO\", fontcolor = \"white\"]\n" , root_p, root_p->right_p);)
+    OFF_DEBUG(fprintf(out_file_p, "   \"%p\"->\"%p\"[label = \"NO\", fontcolor = \"white\"]\n"       , root_p, root_p->right_p);)
 
-    fprintf(out_file_p, "{rank=same; \"%p\"; \"%p\"}\n", root_p->left_p, root_p->left_p);
+    fprintf(out_file_p, "   {rank=same; \"%p\"; \"%p\"}\n", root_p->left_p, root_p->left_p);
 }
