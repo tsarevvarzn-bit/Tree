@@ -10,7 +10,9 @@
 
 #undef ON_DEBUG
 
-const int MAX_STR_LEN = 100;
+const int  MAX_STR_LEN   = 100;
+const int  BUF_FOR_LOG_FILE_LEN = 1000;
+const char* const LOG_MD_FILE_NAME = "LogFile.md";
 
 struct node_t{
 

@@ -48,7 +48,7 @@ return_codes createTreeFromFile(node_t** const root_p_p, const char* const name_
     assert(root_p_p);
     assert(name_of_in_file);
 
-    int    in_file_descr = open(name_of_in_file, _O_BINARY | _O_RDONLY);
+    int    in_file_descr = open(name_of_in_file,  _O_RDONLY);
 
     if(in_file_descr == EOF){
 
@@ -129,12 +129,12 @@ return_codes processBrunch(node_t* const parent_p, const char* const tree_text, 
 
     }
 
+    ON_DEBUG(FILE* log_file_p = fopen(LOG_MD_FILE_NAME, "a");)
+
     if(strncmp(tree_text + *symbol_idx_p, "nil)", 4) == 0){
 
         *node_p_p = NULL;
         *symbol_idx_p += 4;
-
-        ON_DEBUG(printf("NIL for <%s>, branch %d\n", parent_p->value, branch_code);)
 
         return RET_CORRECT;
 
@@ -147,7 +147,22 @@ return_codes processBrunch(node_t* const parent_p, const char* const tree_text, 
         return RET_ERROR;
     }
 
-    ON_DEBUG(printf("Create kid of <%s>, <%s>\n", parent_p->value, node_value);)
+    ON_DEBUG(
+
+        if(branch_code == BRANCH_LEFT){
+
+            fprintf(log_file_p, "Create left kid of <**%s**>: <**%s**>\n\n", parent_p->value, node_value);
+
+        }else{
+
+            fprintf(log_file_p, "Create right kid of <**%s**>: <**%s**>\n\n", parent_p->value, node_value);
+        }
+
+        printf("Print debug info2\n");
+
+    );
+
+    fclose(log_file_p);
 
     if(createSheet(parent_p, branch_code, node_value) == RET_ERROR){
 

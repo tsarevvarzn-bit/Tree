@@ -4,7 +4,15 @@ int main(){
 
     node_t* root_p = NULL;
 
+    FILE* log_file_p = fopen(LOG_MD_FILE_NAME, "w");
+    fprintf(log_file_p, "\n\n# New log, start to read the file:\n");
+    fclose(log_file_p);
+
     createTreeFromFile(&root_p, "Tree1.txt");
+
+    log_file_p = fopen(LOG_MD_FILE_NAME, "a");
+    fprintf(log_file_p, "\n-----------------------------------------\n\n");
+    fclose(log_file_p);
 
     bool is_continue = true;
 

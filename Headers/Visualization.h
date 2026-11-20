@@ -2,7 +2,7 @@
 #define VISUALIZATION_H
 
 #include "Common.h"
-
+#include <fcntl.h>
 const int MAX_LEN_OF_STR_FOR_SYSTEM_CALL = 250;
 const int SYSTEM_CORRECT_RETURN          =   0;
 

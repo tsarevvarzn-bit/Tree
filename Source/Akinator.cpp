@@ -58,6 +58,14 @@ void trainAkinator(node_t* root_p, branch_codes branch_code){
 
     scanf("%[^\n]", new_question_value); getchar();
 
+
+    FILE* log_file_p = fopen(LOG_MD_FILE_NAME, "a");
+
+    fprintf(log_file_p, "Add new elem: <**%s**>, neighbour of <**%s**>, but <**%s**>: <**%s**>\n\n", new_object_name, root_p->value, new_object_name, new_question_value);
+
+    fclose(log_file_p);
+
+
     strcat(new_question_value, "?");
 
 
@@ -73,6 +81,7 @@ void trainAkinator(node_t* root_p, branch_codes branch_code){
     createSheet(new_question_p, BRANCH_LEFT , new_object_name );
 
     createSheet(new_question_p, BRANCH_RIGHT, root_p->value   );
+
 }
 
 void compareTwoObjects(node_t* root_p){

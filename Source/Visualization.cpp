@@ -49,18 +49,45 @@ void visualizeTree(const node_t* const root_p, const char * const name_of_file){
 
         printf(GREEN "Correct visualization! Look for a visualization file named " YELLOW "\"%s\"\n" DEFAULT, name_of_file);
 
+        FILE* log_file_p = fopen(LOG_MD_FILE_NAME, "a");
+
+        fprintf(log_file_p, "## Visualization of tree:\n![](%s)\n\n", name_of_file);
+
+        fclose(log_file_p);
+
     }else{
 
         printf(RED "ERROR! Incorrect return of\n"     \
                    "int result = system(%s);\n"       \
                    "result: %d" DEFAULT, str_for_system_call, result);
     }
+
 }
 
 void addTreeToVisualization(const node_t* const root_p, FILE* const out_file_p){
 
     assert(root_p);
     assert(out_file_p);
+
+    if(root_p->left_p == NULL && root_p->right_p == NULL){
+
+        fprintf(out_file_p,
+
+    "    node [\n"
+    "        fillcolor = \"#69bc66\"\n"
+    "    ]\n"
+        );
+
+    }else{
+
+        fprintf(out_file_p,
+
+    "    node [\n"
+    "        fillcolor = \"yellow\"\n"
+    "    ]\n"
+        );
+
+    }
 
     ON_DEBUG(
     fprintf(out_file_p,
@@ -75,7 +102,7 @@ void addTreeToVisualization(const node_t* const root_p, FILE* const out_file_p){
     OFF_DEBUG(
     fprintf(out_file_p,
 
-    "    \"%p\" [label = \" value = %s\"]\n\n",
+    "    \"%p\" [label = \" %s\"]\n\n",
 
     root_p, root_p->value);
     )
